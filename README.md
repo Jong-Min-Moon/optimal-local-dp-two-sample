@@ -10,7 +10,7 @@ The codes are guranteed to work for the following package versions:
   - pandas=1.3.5
   - torch==1.7.1
 
-The input data are 2d torch tensors, except for chi statistic which takes 1d integer tensors.
+The input data consists of 2D Torch tensors, except for the chi statistic, which requires 1D integer tensors. For multinomial data with a large number of categories or continuous data with a dimensionality \(d\) and bin number \(\kappa\) such that \(\kappa^d\) is large, or when the sample size is very large,  for example when \(k = \kappa^d > 1000\) or \(n > 100,000\), we recommend using a GPU.
 
 We recomment importing the conda environment from the following files:
 - For Linux:
@@ -19,7 +19,7 @@ We recomment importing the conda environment from the following files:
   - LDPUtsEnvK40_windows.yaml
 
 
- You can replicate the simulation results in the paper by running the following python files, with changed sample size, data dimension and privacy parameters (options are provided in the files)
+To replicate the simulation results in the paper, run the following Python files, adjusting the sample size, data dimension, and privacy parameters as specified in the files.
 - For Figure 1:
   - paper_replication_type1.py 
 - For Figure 2:

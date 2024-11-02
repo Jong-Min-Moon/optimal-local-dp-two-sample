@@ -1,10 +1,33 @@
-LDPUTS is a Python package that provides simple implementation and simulation of non-parametric two-sample testing under local differential privacy based on U-statistic and permutation test.
-The primary objective of this project is to offer a user-friendly interface for conducting benchmarking and experimentation with the privacy mechanism and testing procedure. However, it is important to note that this package is not intended for practial development; This package violates some ciritical assmuptions of deploymnent of local differential privacy.
-For example, the raw dataset is first loaded in its entirety on the client side before to the implementation of privacy 
-mechanism. 
-This practice deviates from the fundamental assumption that each individual data point within the raw dataset can only be accessed by its own data owner, while the curator is limited to observing only the privatized releases.
-This violation pertains to the implementation of efficient discretization and privatization for large-scale datasets.
+The code here is written and tested in the following setting:
+- Operating System: CentOS Linux 7 (Core)
+- CPE OS Name: cpe:/o:centos:centos:7
+- Kernel: Linux 3.10.0-1127.19.1.el7.x86_64
+- Architecture: x86-64
+- Python version: 3.7.12
 
-Although local differential privacy is based on individual data owners
+The codes are guranteed to work for the following package versions:
+  - numpy=1.21.6 
+  - pandas=1.3.5
+  - torch==1.7.1
 
-If pure-LDP is useful to you and has been used in your work in any way we would appreciate a reference to:
+The input data are 2d torch tensors, except for chi statistic which takes 1d integer tensors.
+
+We recomment importing the conda environment from the following files;
+For Linux:
+ - LDPUtsEnvK40.yaml
+Fir Windows:
+ - LDPUtsEnvK40_windows.yaml
+
+
+ You can replicate the simulation results in the paper by running the following python files, with changed sample size, data dimension and privacy parameters (options are provided in the files)
+ For Figure 1:
+ - paper_replication_type1.py 
+ For Figure 2:
+ - paper_replication_multinomial.py
+ For Figure 3:
+ - paper_replication_density_location.py
+ For Figure 4:
+  - paper_replication_appendix_g2.py
+ For Figure 5:
+ - paper_replication_density_scale.py
+

@@ -1,4 +1,4 @@
-name: LDPUtsEnvK40
+name: LDPUtsEnvK40_windows
 channels:
   - defaults
   - conda-forge

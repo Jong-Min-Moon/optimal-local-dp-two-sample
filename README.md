@@ -13,28 +13,28 @@ The codes are guranteed to work for the following package versions:
 The input data are 2d torch tensors, except for chi statistic which takes 1d integer tensors.
 
 We recomment importing the conda environment from the following files:
-\n
+<br/>
 For Linux:
  - LDPUtsEnvK40.yaml
-\n
+<br/>
 For Windows:
  - LDPUtsEnvK40_windows.yaml
 
 
  You can replicate the simulation results in the paper by running the following python files, with changed sample size, data dimension and privacy parameters (options are provided in the files)
- \n
+ <br/>
  For Figure 1:
  - paper_replication_type1.py 
- \n
+ <br/>
  For Figure 2:
  - paper_replication_multinomial.py
- \n
+ <br/>
  For Figure 3:
  - paper_replication_density_location.py
- \n
+ <br/>
  For Figure 4:
   - paper_replication_appendix_g2.py
-  \n
+  <br/>
  For Figure 5:
  - paper_replication_density_scale.py
 

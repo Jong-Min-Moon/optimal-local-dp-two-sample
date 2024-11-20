@@ -18,10 +18,11 @@ n_test        = 2000
 test_start    = 1
 significance_level = 0.05
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(torch.get_num_threads())
 ###############################################################################
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(torch.get_num_threads())
+#################### create data generator, client, and server instances#############
+
 data_gen = data_generator() #create data generator
 LDPclient = client() #create the client, which privatizes the data
 
@@ -34,6 +35,8 @@ server_private_vec = {
     }
 server_private = server_private_vec[statistic] #create the server, which conducts the test
 
+
+#################### Run the simulations ##########################################
 print(f"{method_name}, alpha={privacy_level}, sample size={sample_size}")
 print("#########################################")
 p_value_vec = np.zeros([n_test, 1])

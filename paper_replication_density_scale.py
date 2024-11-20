@@ -1,3 +1,4 @@
+############## Import packages #####################################
 import sys
 import gc
 from client import client
@@ -8,7 +9,7 @@ import time
 import numpy as np
 from datetime import datetime
 
-###################### Change settings #########################
+############## Change settings ####################################
 d = 3                       # data dimension; choose from {3,4,5}
 n_bin = 4                   # fixed at 4 in the paper
 privacy_level = 1           # privacy level \alpha: choose from {0.5, 1, 2}
@@ -20,14 +21,13 @@ n_test        = 2000
 test_start    = 1
 significance_level = 0.05
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-###############################################################################
-
-
-
-
 print(torch.get_num_threads())
-data_gen = data_generator()
-LDPclient = client()
+###################################################################
+
+#################### Create data generator, client, and server instances
+data_gen = data_generator() #create data generator
+LDPclient = client() #create the client, which privatizes the data
+
 method_name = priv_mech + statistic
 
 server_private_vec = {
@@ -35,8 +35,10 @@ server_private_vec = {
     "chi":server_multinomial_genrr(privacy_level),
     "projchi":server_multinomial_bitflip(privacy_level)
     }
-server_private = server_private_vec[statistic]
+server_private = server_private_vec[statistic] #create the server, which conducts the test
 
+
+###################### Run the simulations #############################
 print(f"{method_name}, alpha={privacy_level}, sample size={sample_size}")
 print("#########################################")
 p_value_vec = np.zeros([n_test, 1])

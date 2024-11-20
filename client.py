@@ -126,7 +126,6 @@ class bitflip(lapu):
         """
         sample_size = utils.get_sample_size(data_mutinomial)
         flip_probability = torch.tensor(privacy_level).div(2).exp().add(1).reciprocal()
-        print(flip_probability)
         random_mask = torch.bernoulli(torch.full((sample_size, alphabet_size), flip_probability)).int().bool()
         flipped_matrix = torch.nn.functional.one_hot(data_mutinomial, alphabet_size)
         flipped_matrix[random_mask] = 1 - flipped_matrix[random_mask]

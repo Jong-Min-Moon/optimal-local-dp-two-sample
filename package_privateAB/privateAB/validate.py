@@ -1,5 +1,5 @@
 import torch
-import utils
+import privateAB.utils
 
 class validator:
     def get_bitflip_prob(self, privacy_level):
@@ -10,7 +10,7 @@ class validator:
         return(prob_same, prob_diff)
     
     def get_uniform_perturb_l2_dist_squared(self, alphabet_size, bump_size):
-        p1, p2 = utils.get_uniform_perturb(alphabet_size, bump_size)
+        p1, p2 = privateAB.utils.get_uniform_perturb(alphabet_size, bump_size)
         dist_squared = p1.sub(p2).square().sum()
         return(dist_squared)
     

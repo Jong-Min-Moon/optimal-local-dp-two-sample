@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: privateAB
+Version: 0.0.1
+Summary: Two-sample testing (A/B testing) for multinomial and multivariate continuous data under local differential privacy
+Home-page: https://jong-min-moon.github.io/softwares/
+Author: Jongmin Mun
+Author-email: jongmin.mun@marshall.usc.edu
+Project-URL: Bug Tracker, https://github.com/Jong-Min-Moon/optimal-local-dp-two-sample
+Keywords: local differential privacy,A/B test,two-sample test,permutation test
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Requires-Dist: torch>=1.7.1
+Requires-Dist: scipy>=1.7.3
+Requires-Dist: numpy>=1.21.6
+Requires-Dist: pandas>=1.3.5

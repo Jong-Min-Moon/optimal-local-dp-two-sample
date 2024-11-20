@@ -1,6 +1,5 @@
 from abc import ABC, ABCMeta, abstractmethod
-from client import client
-import utils
+import privateAB.utils
 import torch
 from scipy.stats import chi2
 
@@ -16,8 +15,8 @@ class server(ABC):
         
     def load_private_data_multinomial(self, data_y, data_z, alphabet_size, device_y, device_z):
         self.alphabet_size = alphabet_size
-        self.n_1 = torch.tensor(utils.get_sample_size(data_y))
-        self.n_2 = torch.tensor(utils.get_sample_size(data_z))
+        self.n_1 = torch.tensor(privateAB.utils.get_sample_size(data_y))
+        self.n_2 = torch.tensor(privateAB.utils.get_sample_size(data_z))
         self.n = self.n_1 + self.n_2
         self.scaling_constant = 1/(1/ self.n_1 + 1/ self.n_2)
         self.chisq_distribution = torch.distributions.chi2.Chi2(
@@ -70,14 +69,14 @@ class server(ABC):
         return( self.n_1.equal(0) )
 
     def is_integer_form(self, data):
-        return( utils.get_dimension(data) == 1 )
+        return( privateAB.utils.get_dimension(data) == 1 )
 
     def get_sum_y(self, perm ):
-        perm_toY_fromY, perm_toY_fromZ, _, _ = utils.split_perm(perm, self.n_1)
+        perm_toY_fromY, perm_toY_fromZ, _, _ = privateAB.utils.split_perm(perm, self.n_1)
         return (self.data_y[perm_toY_fromY].sum(0).to(self.cuda_device_z ).add( self.data_z[perm_toY_fromZ].sum(0) )).to(torch.float)
     
     def get_sum_z(self, perm ):
-        _, _, perm_toZ_fromY, perm_toZ_fromZ = utils.split_perm(perm, self.n_1)
+        _, _, perm_toZ_fromY, perm_toZ_fromZ = privateAB.utils.split_perm(perm, self.n_1)
         return (self.data_y[perm_toZ_fromY].sum(0).to(self.cuda_device_z ).add( self.data_z[perm_toZ_fromZ].sum(0) )).to(torch.float)
     
     def get_mean_y(self, perm):
@@ -109,14 +108,14 @@ class server_ell2(server):
         self.push_data_to_gpu()
 
     def _process_categorical(self,  alphabet_size):
-        if utils.get_dimension(self.data_y) == 1:
+        if privateAB.utils.get_dimension(self.data_y) == 1:
             self.data_y = torch.nn.functional.one_hot( self.data_y , alphabet_size)
-        if utils.get_dimension(self.data_z) == 1:
+        if privateAB.utils.get_dimension(self.data_z) == 1:
             self.data_z = torch.nn.functional.one_hot( self.data_z , alphabet_size)
  
     def _get_statistic(self, perm):
         # Split permutation
-        perm_toY_fromY, perm_toY_fromZ, perm_toZ_fromY, perm_toZ_fromZ = utils.split_perm(perm, self.n_1)
+        perm_toY_fromY, perm_toY_fromZ, perm_toZ_fromY, perm_toZ_fromZ = privateAB.utils.split_perm(perm, self.n_1)
         
         # Get row sums
         y_row_sum = self.get_sum_y(perm).to(torch.float64)
@@ -231,9 +230,9 @@ class server_multinomial_genrr(server):
         return(mu_hat_diff)
 
     def get_grand_mean(self):
-        perm_toY_fromY, perm_toY_fromZ, _, _ = utils.split_perm(torch.arange(self.n), self.n_1)
+        perm_toY_fromY, perm_toY_fromZ, _, _ = privateAB.utils.split_perm(torch.arange(self.n), self.n_1)
         sum_y = self.data_y[perm_toY_fromY].sum(0).add( self.data_z[perm_toY_fromZ].sum(0) ).to(torch.float)
-        _, _, perm_toZ_fromY, perm_toZ_fromZ = utils.split_perm(torch.arange(self.n), self.n_1)   
+        _, _, perm_toZ_fromY, perm_toZ_fromZ = privateAB.utils.split_perm(torch.arange(self.n), self.n_1)   
         sum_z = self.data_y[perm_toZ_fromY].sum(0).add( self.data_z[perm_toZ_fromZ].sum(0) ).to(torch.float)
         grand_mean = torch.add(sum_z, sum_y).div(self.n).to(torch.float)
         return(grand_mean)
@@ -241,8 +240,8 @@ class server_multinomial_genrr(server):
 class server_multinomial_bitflip(server_multinomial_genrr):
     def load_private_data_multinomial(self, data_y, data_z, alphabet_size, device_y, device_z):
         self.alphabet_size = alphabet_size
-        self.n_1 = torch.tensor(utils.get_sample_size(data_y))
-        self.n_2 = torch.tensor(utils.get_sample_size(data_z))
+        self.n_1 = torch.tensor(privateAB.utils.get_sample_size(data_y))
+        self.n_2 = torch.tensor(privateAB.utils.get_sample_size(data_z))
         self.n = self.n_1 + self.n_2
         self.scaling_constant = 1/(1/ self.n_1 + 1/ self.n_2)
         self.chisq_distribution = torch.distributions.chi2.Chi2(

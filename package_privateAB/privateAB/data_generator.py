@@ -1,6 +1,5 @@
 import torch
 
-import torch
 
 def power_law_distribution(k, alpha):
     ranks = torch.arange(1, k + 1, dtype=torch.float)

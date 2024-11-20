@@ -1,8 +1,8 @@
 ### Import packages
-from client import client
 import torch
-from server import server_multinomial_bitflip, server_multinomial_genrr, server_ell2
-from data_generator import create_power_law, data_generator
+from privateAB.client import client
+from privateAB.server import server_multinomial_bitflip, server_multinomial_genrr, server_ell2
+from privateAB.data_generator import create_power_law, data_generator
 import time
 import numpy as np
 from datetime import datetime

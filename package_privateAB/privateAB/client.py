@@ -1,7 +1,7 @@
 import torch
-import utils
+import privateAB.utils 
+from privateAB.discretizer import discretizer
 
-from discretizer import discretizer
 
 class client:
     def __init__(self):
@@ -48,7 +48,7 @@ class lapu:
         
 
     def privatize(self, data_mutinomial, alphabet_size, privacy_level, cuda_device):
-        sample_size = utils.get_sample_size(data_mutinomial)
+        sample_size = privateAB.utils.get_sample_size(data_mutinomial)
         data_private = torch.nn.functional.one_hot(data_mutinomial, alphabet_size).add(
             self._generate_noise(alphabet_size, privacy_level, sample_size).mul(
                 torch.tensor(8**0.5, dtype=torch.float32)
@@ -87,7 +87,7 @@ class lapu:
 
 class disclapu(lapu):
     def privatize(self, data_mutinomial, alphabet_size, privacy_level, cuda_device):
-        sample_size = utils.get_sample_size(data_mutinomial)
+        sample_size = privateAB.utils.get_sample_size(data_mutinomial)
         data_private = torch.nn.functional.one_hot(data_mutinomial, alphabet_size).mul(
             torch.tensor(alphabet_size, dtype=torch.float32).sqrt()
         ).add(
@@ -106,7 +106,7 @@ class disclapu(lapu):
 class genrr(lapu):   
     def privatize(self, data_mutinomial, alphabet_size, privacy_level, cuda_device):
         privacy_level_exp = torch.tensor(privacy_level, dtype=torch.float64).exp()
-        sample_size = utils.get_sample_size(data_mutinomial)
+        sample_size = privateAB.utils.get_sample_size(data_mutinomial)
         data_onehot = torch.nn.functional.one_hot(data_mutinomial, alphabet_size)
         one_matrix = torch.zeros(size = torch.Size([sample_size, alphabet_size])).add(1)
 
@@ -124,7 +124,7 @@ class bitflip(lapu):
         """
         output: bit vector in (0,1)^k
         """
-        sample_size = utils.get_sample_size(data_mutinomial)
+        sample_size = privateAB.utils.get_sample_size(data_mutinomial)
         flip_probability = torch.tensor(privacy_level).div(2).exp().add(1).reciprocal()
         random_mask = torch.bernoulli(torch.full((sample_size, alphabet_size), flip_probability)).int().bool()
         flipped_matrix = torch.nn.functional.one_hot(data_mutinomial, alphabet_size)

@@ -1,10 +1,11 @@
 ### Import packages
-from client import client
+from privateAB.client import client
 import torch
-from server import server_ell2, server_multinomial_genrr, server_multinomial_bitflip
-from data_generator import data_generator
+from privateAB.server import server_multinomial_bitflip, server_multinomial_genrr, server_ell2
+from privateAB.data_generator import data_generator
 import time
 import numpy as np
+
 
 
 ### Change settings ################

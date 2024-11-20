@@ -2,7 +2,7 @@ from abc import ABC, ABCMeta, abstractmethod
 from client import client
 import utils
 import torch
-
+from scipy.stats import chi2
 
 import gc
 
@@ -196,9 +196,10 @@ class server_multinomial_genrr(server):
 
     def release_p_value(self):
         test_stat = self.get_original_statistic()
-        print(self.chisq_distribution.df)
-        print(test_stat)     
-        return(1 - self.chisq_distribution.cdf(test_stat))
+        #print(self.chisq_distribution.df)
+        #print(test_stat)    
+        p_value = 1 - chi2.cdf(test_stat, self.chisq_distribution.df) 
+        return(p_value, float(test_stat))
 
     def release_p_value_permutation(self, n_permutation):
         mu_hat_diff_mat = torch.empty([self.alphabet_size, (n_permutation+1) ]).to(self.cuda_device_y)

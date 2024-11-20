@@ -1,3 +1,4 @@
+### Import packages
 from client import client
 import torch
 from server import server_multinomial_bitflip, server_multinomial_genrr, server_ell2
@@ -7,27 +8,24 @@ import numpy as np
 from datetime import datetime
 
 ###################### Change settings #########################
- 
+sample_size   = 8400   
+test_start    = 1
+n_test = 2000
+privacy_level = 1           # privacy level \alpha: choose from {1, 2, 4}
+statistic  = 'projchi' #choose between 'projchi' and 'elltwo'
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+################### Fixed settings ##################################
 param_dist        = 2.45 # power law parameter of distribution Y; fixed at 2.45 in the paper
 power_2           = 2.3  # power law parameter of distribution Z; fixed at 2.3 in the paper
 d = 40                      # number of categories; fixed at 40 in the paper
-privacy_level = 1           # privacy level \alpha: choose from {1, 2, 4}
-sample_size   = 8400        
 n_permutation = 999         # fixed at 999 in the paper
-priv_mech  = 'genrr' #choose among 'bitflip', 'genrr', 'lapu', 'disclapu'
-statistic  = 'elltwo' #choose among 'chi', 'projchi', 'elltwo'. chi requires 1-dimensional multinomial data.
-n_test        = 2000        
-test_start    = 1
+priv_mech  = 'bitflip' #fixed in the paper
 significance_level = 0.05
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 ###############################################################################
 
 
-
-priv_mech  = 'bitflip' #fixed in the paper
-statistic  = 'projchi' #choose between 'projchi' and 'elltwo'
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(torch.get_num_threads())
+### Create data generator, client, and server instances
 data_gen = data_generator()
 LDPclient = client()
 significance_level = 0.05
@@ -40,6 +38,8 @@ server_private_vec = {
     }
 server_private = server_private_vec[statistic]
 
+
+### Run the simulations
 print(f"{method_name}, alpha={privacy_level}, sample size={sample_size}")
 print("#########################################")
 p_value_vec = np.zeros([n_test, 1])

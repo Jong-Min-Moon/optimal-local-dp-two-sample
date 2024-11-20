@@ -22,8 +22,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(torch.get_num_threads())
-data_gen = data_generator()
-LDPclient = client()
+data_gen = data_generator() #create data generator
+LDPclient = client() #create the client, which privatizes the data
 
 method_name = priv_mech + statistic
 
@@ -32,7 +32,7 @@ server_private_vec = {
     "chi":server_multinomial_genrr(privacy_level),
     "projchi":server_multinomial_bitflip(privacy_level)
     }
-server_private = server_private_vec[statistic]
+server_private = server_private_vec[statistic] #create the server, which conducts the test
 
 print(f"{method_name}, alpha={privacy_level}, sample size={sample_size}")
 print("#########################################")
